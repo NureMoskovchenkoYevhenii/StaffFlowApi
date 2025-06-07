@@ -1,0 +1,43 @@
+# Personal user files
+*.user
+*.userosscache
+*.suo
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio code coverage results
+*.coverage
+*.coverage.xml
+
+# Visual Studio temporary files
+*.tmp
+*.vs/
+.vs/
+
+# Docker
+docker-compose.override.yml
+
+# Rider
+.idea/
+*.sln.iml
+
+# UserSecrets
+secrets.json
+
+# Environment variables
+.env
+
+# Mac files
+.DS_Store
+
+# Log files
+*.log
