@@ -1,43 +1,18 @@
-# Personal user files
+# Visual Studio / .NET
+**/[Bb]in/
+**/[Oo]bj/
 *.user
-*.userosscache
 *.suo
-
-# Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-bld/
-[Bb]in/
-[Oo]bj/
-
-# Visual Studio code coverage results
-*.coverage
-*.coverage.xml
-
-# Visual Studio temporary files
-*.tmp
-*.vs/
+*.vs
 .vs/
+*.*.user
+*.tmp
 
 # Docker
-docker-compose.override.yml
+.dockerignore
 
-# Rider
-.idea/
-*.sln.iml
-
-# UserSecrets
-secrets.json
-
-# Environment variables
-.env
-
-# Mac files
+# Mac
 .DS_Store
 
-# Log files
+# Інше
 *.log
