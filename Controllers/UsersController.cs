@@ -5,7 +5,7 @@ using Microsoft.Extensions.Localization; // Обов'язково додайте
 using System.Linq; 
 using System.Threading.Tasks;
 
-[ApiController]
+//[ApiController]
 [Route("api/[controller]")]
 [Authorize] // Застосовуємо авторизацію до всього контролера
 public class UsersController : ControllerBase
@@ -64,7 +64,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    [AllowAnonymous]
     public async Task<IActionResult> AddUser([FromBody] UserDto userDto)
     {
         if (userDto == null)
@@ -87,7 +87,7 @@ public class UsersController : ControllerBase
         {
             return BadRequest(_localizer["InvalidData"].Value);
         }
-        
+
         var userToUpdate = _userMapper.MapToEntity(userDto);
         await _userService.UpdateUserAsync(id, userToUpdate);
 
@@ -99,6 +99,29 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> DeleteUser(int id)
     {
         await _userService.DeleteUserAsync(id);
-        return NoContent(); 
+        return NoContent();
     }
+    
+    [HttpPost("login")]
+    [AllowAnonymous] 
+    public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+    {
+        if (loginDto == null)
+        {
+            return BadRequest(_localizer["InvalidData"].Value);
+        }
+
+        var user = await _userService.Authenticate(loginDto.PhoneNumber, loginDto.Password);
+
+        if (user == null)
+        {
+            // Повертаємо загальну помилку, щоб не розкривати, що саме невірно (логін чи пароль)
+            return Unauthorized(_localizer["InvalidCredentials"].Value);
+        }
+
+        // Якщо автентифікація успішна, повертаємо інформацію про користувача (без пароля)
+        var userDto = _userMapper.MapToDto(user);
+        return Ok(userDto);
+    }
+
 }

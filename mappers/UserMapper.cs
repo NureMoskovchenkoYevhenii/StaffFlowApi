@@ -43,3 +43,8 @@ public class UserDto
     // Інші властивості...
 }
 
+public class LoginDto
+{
+    public string PhoneNumber { get; set; } // Використовуємо PhoneNumber як логін
+    public string Password { get; set; }
+}

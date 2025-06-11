@@ -98,4 +98,7 @@
   <data name="WorkingDayNotFound" xml:space="preserve">
     <value>Working day with ID {0} not found.</value>
   </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Invalid username or password.</value>
+  </data>
 </root>

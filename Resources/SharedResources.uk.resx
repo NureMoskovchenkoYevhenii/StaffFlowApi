@@ -99,4 +99,7 @@
   <data name="WorkingDayNotFound" xml:space="preserve">
     <value>Робочий день з ID {0} не знайдено.</value>
   </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Невірний логін або пароль.</value>
+  </data>
 </root>

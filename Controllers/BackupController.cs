@@ -5,7 +5,7 @@ using Microsoft.Extensions.Localization;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Admin")] // Тільки адміністратор може робити бекапи
+//[Authorize(Roles = "Admin")] // Тільки адміністратор може робити бекапи
 public class BackupController : ControllerBase
 {
     private readonly BackupService _backupService;

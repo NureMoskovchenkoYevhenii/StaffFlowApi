@@ -7,6 +7,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 // using System.Text; // Може знадобитися, якщо BasicAuthenticationHandler знаходиться тут. Якщо в окремому файлі, там мають бути свої using.
 
+
+
+//налаштування CORS на Backend
+
+
+
 // Створення WebApplicationBuilder
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +37,7 @@ builder.Services.AddScoped<IUserWorkingDayRepository, UserWorkingDayRepository>(
 builder.Services.AddScoped<IChangeRequestRepository, ChangeRequestRepository>();
 builder.Services.AddScoped<IUserChangeRequestRepository, UserChangeRequestRepository>();
 builder.Services.AddScoped<ISensorDataRepository, SensorDataRepository>(); // Репозиторій для даних сенсорів
+
 
 // Реєстрація сервісів (Scoped lifetime)
 builder.Services.AddScoped<UserService>();
@@ -83,7 +90,20 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// --- НОВИЙ БЛОК: Налаштування CORS ---
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          // Дозволяємо запити з вашого локального фронтенду
+                     policy.WithOrigins("http://localhost:8081")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                      });
+});
 // --- Налаштування конвеєра HTTP-запитів (Middleware Pipeline) ---
 
 var app = builder.Build();
@@ -132,6 +152,8 @@ else // Наприклад, Production, Staging
     // В реальному проекті тут був би більш безпечний обробник помилок та, можливо, відсутність Swagger
 }
 
+
+
 // Додайте обслуговування статичних файлів (наприклад, index.html, CSS, JS з папки wwwroot)
 // Зазвичай розміщується до UseRouting, щоб запити до статичних файлів не проходили через роутинг контролерів
 app.UseStaticFiles();
@@ -139,12 +161,20 @@ app.UseStaticFiles();
 // app.UseHttpsRedirection(); // Якщо ви використовуєте ngrok з HTTPS -> HTTP, це middleware може спричиняти проблеми.
 // Ngrok вже забезпечує HTTPS на публічному боці. Зазвичай відключають, якщо ngrok перенаправляє на HTTP локально.
 
+
+app.UseCors(MyAllowSpecificOrigins);
 app.UseRouting(); // Визначає відповідний Endpoint (контролер, Razor Page тощо) для запиту
+
+
+
+
 
 // !!! ПЕРЕМІСТІТЬ UseAuthentication() та UseAuthorization() СЮДИ !!!
 // Після UseRouting, але до MapControllers/MapRazorPages/MapEndpoints
 // Це гарантує, що автентифікація та авторизація застосовуються до Endpoint-ів, визначених роутингом.
 // Запити до Swagger UI (оброблені раніше) не пройдуть через ці middleware.
+
+
 app.UseAuthentication(); // Виконує автентифікацію (наприклад, перевіряє Basic Auth заголовок)
 app.UseAuthorization();  // Виконує авторизацію (перевіряє права доступу на основі автентифікованого користувача)
 
